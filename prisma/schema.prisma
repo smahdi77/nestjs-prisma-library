@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id Int @default(autoincrement()) @id
+  email String @unique
+  firs_name String 
+  last_name String
+  age Int?
+  role Role @default(USER)
+  username String @unique
+  password String
+  books BooksOfUsers[]
+  logs Log[]
+}
+
+model Book {
+  id Int @default(autoincrement()) @id
+  title String
+  writer String?
+  translator String?
+  price Int
+  publisher String?
+  ISBN String?
+  editor String?
+  topicId Int
+  topic BookTopic @relation(fields: [topicId], references: [id])
+  users BooksOfUsers[]
+}
+
+model BookTopic {
+  id Int @default(autoincrement()) @id
+  title String
+  sub_title String
+  books Book[]
+}
+
+model BooksOfUsers {
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  book Book @relation(fields: [bookId], references: [id])
+  bookId Int
+  assignedAt DateTime @default(now())
+
+  @@id([userId , bookId])
+}
+
+model Log {
+  id Int @default(autoincrement()) @id
+  title String
+  logType LogType
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  }
+
+
+enum Role {
+  ADMIN
+  USER
+  PUBLISHER
+  STORE
+}
+
+enum LogType {
+  LOGIN
+  LOGOUT
+  INSERT
+  UPDATE
+  DELETE
+}
+
+// enum topic {
+//   Religious   //مذهبی
+//   political   //سیاسی
+//   historical  //تاریخی  
+//   scientific  //علمی
+//   Course      //درسی
+//   fffff       //روانشناسی
+//   family       //خانواده
+// }
