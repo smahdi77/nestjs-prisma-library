@@ -8,7 +8,7 @@ CREATE TYPE "LogType" AS ENUM ('LOGIN', 'LOGOUT', 'INSERT', 'UPDATE', 'DELETE');
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
-    "firs_name" TEXT NOT NULL,
+    "first_name" TEXT NOT NULL,
     "last_name" TEXT NOT NULL,
     "age" INTEGER,
     "role" "Role" NOT NULL DEFAULT 'USER',
