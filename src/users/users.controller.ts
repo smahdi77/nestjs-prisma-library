@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 // import { CreateUserDto } from './dto/create-user.dto';
@@ -20,10 +21,17 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  findAll() {
+  @Roles(Role.ADMIN)
+  async findAll() {
     return this.usersService.findAll();
+  }
+
+  @Get('/one')
+  @UseGuards(JwtAuthGuard)
+  findone1(@Req() req: any) {
+    const user_id = req.user.userId;
+    return this.usersService.findOne(user_id);
   }
 
   @Get(':id')
