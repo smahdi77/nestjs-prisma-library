@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { PrismaService } from 'prisma-database/prisma.service';
 import { UsersService } from 'src/users/users.service';
-import { Prisma } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class BooksService {
@@ -71,11 +71,17 @@ export class BooksService {
     return mybooks;
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  async update(id: number, updateBookDto: UpdateBookDto) {
+    let update = await this.prisma.book.update({where: {id}, data: updateBookDto})
+    if (!update)
+      throw new HttpException("data is wrong",HttpStatus.INTERNAL_SERVER_ERROR)
+    else
+      return update
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  async remove(id: number) {
+    await this.prisma.booksOfUsers.deleteMany({where: {bookId: id}})
+    const remove = await this.prisma.book.delete({where: {id}});
+    return (remove) ? remove: new HttpException("error", 400);
   }
 }
