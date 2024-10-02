@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int            @id @default(autoincrement())
+  email      String         @unique
+  first_name String
+  last_name  String
+  age        Int?
+  role       Role           @default(USER)
+  username   String         @unique
+  password   String
+  books      BooksOfUsers[]
+  logs       Log[]
+}
+
+model Book {
+  id         Int            @id @default(autoincrement())
+  title      String
+  writer     String?
+  translator String?
+  price      Int
+  publisher  String?
+  ISBN       String?
+  editor     String?
+  topicId    Int
+  topic      BookTopic      @relation(fields: [topicId], references: [id])
+  users      BooksOfUsers[]
+}
+
+model BookTopic {
+  id        Int    @id @default(autoincrement())
+  title     String
+  sub_title String
+  books     Book[]
+}
+
+model BooksOfUsers {
+  userId     Int
+  bookId     Int
+  assignedAt DateTime @default(now())
+  book       Book     @relation(fields: [bookId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, bookId])
+}
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  title     String
+  logType   LogType
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  USER
+  PUBLISHER
+  STORE
+}
+
+enum LogType {
+  LOGIN
+  LOGOUT
+  INSERT
+  UPDATE
+  DELETE
+}
