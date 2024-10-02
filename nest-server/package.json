@@ -1,5 +1,5 @@
 {
-  "name": "library",
+  "name": "library_nest",
   "version": "0.0.1",
   "description": "<p align=\"center\">\r   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"200\" alt=\"Nest Logo\" /></a>\r </p>",
   "author": "",
@@ -27,7 +27,7 @@
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/serve-static": "^4.0.2",
-    "@prisma/client": "^5.16.1",
+    "@prisma/client": "^5.20.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "nodemon": "^3.1.0",
@@ -36,7 +36,7 @@
     "pg": "^8.11.3",
     "postgres": "^3.4.3",
     "postgresql": "^0.0.1",
-    "prisma": "^5.16.1",
+    "prisma": "^5.20.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "touch": "^3.1.0",
@@ -88,5 +88,9 @@
   "main": ".eslintrc.js",
   "directories": {
     "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "smahdi77"
   }
 }
